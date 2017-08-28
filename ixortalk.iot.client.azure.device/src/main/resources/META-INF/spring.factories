@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.ixortalk.iot.client.azure.device.config.AzureIotDeviceClientAutoConfiguration
