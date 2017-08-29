@@ -34,14 +34,12 @@ When using Azure, add the following dependencies:
 ```
 <dependency>
     <groupId>com.ixortalk</groupId>
-    <artifactId>ixortalk.iot.client.core</artifactId>
-    <version>${ixortalk.iot.client.core.version}</version>
+    <artifactId>ixortalk-iot-client-spring-boot-starter</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
 </dependency>
 <dependency>
-    <groupId>com.ixortalk</groupId>
-    <artifactId>ixortalk.iot.client.azure.device</artifactId>
-    <version>${ixortalk.iot.client.azure.device.version}</version>
-    <scope>runtime</scope>
+    <groupId>com.microsoft.azure.sdk.iot</groupId>
+    <artifactId>iot-device-client</artifactId>
 </dependency>
 ```
 
@@ -65,15 +63,14 @@ When using AWS, add the following dependencies:
 ```
 <dependency>
     <groupId>com.ixortalk</groupId>
-    <artifactId>ixortalk.iot.client.core</artifactId>
-    <version>${ixortalk.iot.client.core.version}</version>
+    <artifactId>ixortalk-iot-client-spring-boot-starter</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
 </dependency>
 <dependency>
-    <groupId>com.ixortalk</groupId>
-    <artifactId>ixortalk.iot.client.aws</artifactId>
-    <version>${ixortalk.iot.client.aws.version}</version>
-    <scope>runtime</scope>
+    <groupId>com.amazonaws</groupId>
+    <artifactId>aws-iot-device-sdk-java</artifactId>
 </dependency>
+
 ```
 
 And make sure you have the following configuration

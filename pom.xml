@@ -86,9 +86,34 @@
                 <scope>test</scope>
             </dependency>
             <dependency>
+                <groupId>com.ixortalk</groupId>
+                <artifactId>ixortalk-iot-client-spring-boot-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ixortalk</groupId>
+                <artifactId>ixortalk-iot-client-spring-boot-azure-device</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ixortalk</groupId>
+                <artifactId>ixortalk-iot-client-spring-boot-aws</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>com.amazonaws</groupId>
                 <artifactId>aws-iot-device-sdk-java</artifactId>
                 <version>1.1.1</version>
+            </dependency>
+            <dependency>
+                <groupId>com.microsoft.azure.sdk.iot</groupId>
+                <artifactId>iot-service-client</artifactId>
+                <version>1.7.23</version>
+            </dependency>
+            <dependency>
+                <groupId>com.microsoft.azure.sdk.iot</groupId>
+                <artifactId>iot-device-client</artifactId>
+                <version>1.3.32</version>
             </dependency>
             <dependency>
                 <groupId>javax.inject</groupId>
@@ -104,10 +129,12 @@
     </dependencyManagement>
 
     <modules>
-        <module>ixortalk.iot.client.core</module>
-        <module>ixortalk.iot.client.aws</module>
-        <module>ixortalk.iot.client.azure.device</module>
-        <module>ixortalk.iot.client.sampleapp</module>
+        <module>ixortalk-iot-client-spring-boot-autoconfigure</module>
+        <module>ixortalk-iot-client-spring-boot-starter</module>
+        <module>ixortalk-iot-client-spring-boot-core</module>
+        <module>ixortalk-iot-client-spring-boot-aws</module>
+        <module>ixortalk-iot-client-spring-boot-azure-device</module>
+        <module>ixortalk-iot-client-spring-boot-sampleapp</module>
     </modules>
 
     <build>
