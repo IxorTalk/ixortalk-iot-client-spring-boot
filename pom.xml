@@ -34,6 +34,7 @@
 
     <name>ixortalk.iot.client</name>
     <description>Common IxorTalk module for IoT integration</description>
+    <url>https://github.com/IxorTalk/ixortalk.iot.client.git/tree/master</url>
 
 
     <organization>
