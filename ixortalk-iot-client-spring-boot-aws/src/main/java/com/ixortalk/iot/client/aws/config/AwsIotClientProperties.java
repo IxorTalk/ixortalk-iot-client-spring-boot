@@ -33,6 +33,14 @@ public class AwsIotClientProperties {
     private String clientId;
     private String certificateFile;
     private String privateKeyFile;
+    private Integer maxConnectionRetries;
+    private Integer baseRetryDelay;
+    private Integer connectionTimeout;
+    private Integer keepAliveInterval;
+    private Integer maxOfflineQueueSize;
+    private Integer maxRetryDelay;
+    private Integer numOfClientThreads;
+    private Integer serverAckTimeout;
 
     public String getEndpoint() {
         return endpoint;
@@ -72,5 +80,69 @@ public class AwsIotClientProperties {
 
     public void setPrivateKeyFile(String privateKeyFile) {
         this.privateKeyFile = privateKeyFile;
+    }
+
+    public Integer getMaxConnectionRetries() {
+        return maxConnectionRetries;
+    }
+
+    public void setMaxConnectionRetries(Integer maxConnectionRetries) {
+        this.maxConnectionRetries = maxConnectionRetries;
+    }
+
+    public Integer getBaseRetryDelay() {
+        return baseRetryDelay;
+    }
+
+    public void setBaseRetryDelay(Integer baseRetryDelay) {
+        this.baseRetryDelay = baseRetryDelay;
+    }
+
+    public Integer getConnectionTimeout() {
+        return connectionTimeout;
+    }
+
+    public void setConnectionTimeout(Integer connectionTimeout) {
+        this.connectionTimeout = connectionTimeout;
+    }
+
+    public Integer getKeepAliveInterval() {
+        return keepAliveInterval;
+    }
+
+    public void setKeepAliveInterval(Integer keepAliveInterval) {
+        this.keepAliveInterval = keepAliveInterval;
+    }
+
+    public Integer getMaxOfflineQueueSize() {
+        return maxOfflineQueueSize;
+    }
+
+    public void setMaxOfflineQueueSize(Integer maxOfflineQueueSize) {
+        this.maxOfflineQueueSize = maxOfflineQueueSize;
+    }
+
+    public Integer getMaxRetryDelay() {
+        return maxRetryDelay;
+    }
+
+    public void setMaxRetryDelay(Integer maxRetryDelay) {
+        this.maxRetryDelay = maxRetryDelay;
+    }
+
+    public Integer getNumOfClientThreads() {
+        return numOfClientThreads;
+    }
+
+    public void setNumOfClientThreads(Integer numOfClientThreads) {
+        this.numOfClientThreads = numOfClientThreads;
+    }
+
+    public Integer getServerAckTimeout() {
+        return serverAckTimeout;
+    }
+
+    public void setServerAckTimeout(Integer serverAckTimeout) {
+        this.serverAckTimeout = serverAckTimeout;
     }
 }
