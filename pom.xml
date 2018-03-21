@@ -35,6 +35,29 @@
     <name>ixortalk.iot.client</name>
     <description>Common IxorTalk module for IoT integration</description>
 
+
+    <organization>
+        <name>IxorTalk CVBA</name>
+        <url>http://ixortalk.com</url>
+    </organization>
+    <licenses>
+        <license>
+            <name>The MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <id>ddewaele</id>
+            <name>Davy De Waele</name>
+            <email>davy.dewaele at ixortalk.com</email>
+            <organization>IxorTalk CVBA</organization>
+            <organizationUrl>http://ixortalk.com</organizationUrl>
+            <roles>
+                <role>Project lead</role>
+            </roles>
+        </developer>
+    </developers>
     <scm>
         <connection>scm:git:git@github.com:IxorTalk/ixortalk.iot.client.git</connection>
         <developerConnection>scm:git:git@github.com:IxorTalk/ixortalk.iot.client.git</developerConnection>
