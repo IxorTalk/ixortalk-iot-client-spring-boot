@@ -29,12 +29,12 @@
 
     <groupId>com.ixortalk</groupId>
     <artifactId>ixortalk-iot-client-spring-boot-sampleapp</artifactId>
-    <version>0.0.3</version>
+    <version>0.0.4-SNAPSHOT</version>
 
     <parent>
         <groupId>com.ixortalk</groupId>
         <artifactId>ixortalk.iot.client</artifactId>
-        <version>0.0.3</version>
+        <version>0.0.4-SNAPSHOT</version>
     </parent>
 
     <properties>
