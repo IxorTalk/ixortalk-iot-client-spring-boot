@@ -25,7 +25,7 @@ Azure uses a device connection string that you can view in the portal. Take a no
 
 # Maven Dependencies
 
-In order to use the IoT client, you'll need to add the following maven dependencies
+This library is published to maven central. In order to use the IoT client, you'll need to add the following maven dependencies
 
 ## Azure
 
@@ -35,11 +35,12 @@ When using Azure, add the following dependencies:
 <dependency>
     <groupId>com.ixortalk</groupId>
     <artifactId>ixortalk-iot-client-spring-boot-starter</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.6</version>
 </dependency>
 <dependency>
     <groupId>com.microsoft.azure.sdk.iot</groupId>
     <artifactId>iot-device-client</artifactId>
+    <version>1.3.32</version>
 </dependency>
 ```
 
@@ -64,11 +65,12 @@ When using AWS, add the following dependencies:
 <dependency>
     <groupId>com.ixortalk</groupId>
     <artifactId>ixortalk-iot-client-spring-boot-starter</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.6</version>
 </dependency>
 <dependency>
     <groupId>com.amazonaws</groupId>
     <artifactId>aws-iot-device-sdk-java</artifactId>
+    <version>1.1.1</version>
 </dependency>
 
 ```
