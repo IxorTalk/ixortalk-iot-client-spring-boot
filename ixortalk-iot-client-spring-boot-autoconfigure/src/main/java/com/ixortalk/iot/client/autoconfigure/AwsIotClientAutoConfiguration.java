@@ -84,37 +84,14 @@ public class AwsIotClientAutoConfiguration {
         KeyStorePasswordPair pair = getKeyStorePasswordPair(awsIotClientProperties.getCertificateFile(), awsIotClientProperties.getPrivateKeyFile());
         AWSIotMqttClient client = new AWSIotMqttClient(awsIotClientProperties.getEndpoint(), awsIotClientProperties.getClientId(), pair.keyStore, pair.keyPassword);
 
-        if (awsIotClientProperties.getMaxConnectionRetries()!=null){
-            client.setMaxConnectionRetries(awsIotClientProperties.getMaxConnectionRetries());
-        }
-
-        if (awsIotClientProperties.getBaseRetryDelay()!=null){
-            client.setBaseRetryDelay(awsIotClientProperties.getBaseRetryDelay());
-        }
-
-        if (awsIotClientProperties.getConnectionTimeout()!=null){
-            client.setConnectionTimeout(awsIotClientProperties.getConnectionTimeout());
-        }
-
-        if (awsIotClientProperties.getKeepAliveInterval()!=null){
-            client.setKeepAliveInterval(awsIotClientProperties.getKeepAliveInterval());
-        }
-
-        if (awsIotClientProperties.getMaxOfflineQueueSize()!=null){
-            client.setMaxOfflineQueueSize(awsIotClientProperties.getMaxOfflineQueueSize());
-        }
-
-        if (awsIotClientProperties.getMaxRetryDelay()!=null){
-            client.setMaxRetryDelay(awsIotClientProperties.getMaxRetryDelay());
-        }
-
-        if (awsIotClientProperties.getNumOfClientThreads()!=null){
-            client.setNumOfClientThreads(awsIotClientProperties.getNumOfClientThreads());
-        }
-
-        if (awsIotClientProperties.getServerAckTimeout()!=null){
-            client.setServerAckTimeout(awsIotClientProperties.getServerAckTimeout());
-        }
+        client.setMaxConnectionRetries(awsIotClientProperties.getMaxConnectionRetries());
+        client.setBaseRetryDelay(awsIotClientProperties.getBaseRetryDelay());
+        client.setConnectionTimeout(awsIotClientProperties.getConnectionTimeout());
+        client.setKeepAliveInterval(awsIotClientProperties.getKeepAliveInterval());
+        client.setMaxOfflineQueueSize(awsIotClientProperties.getMaxOfflineQueueSize());
+        client.setMaxRetryDelay(awsIotClientProperties.getMaxRetryDelay());
+        client.setNumOfClientThreads(awsIotClientProperties.getNumOfClientThreads());
+        client.setServerAckTimeout(awsIotClientProperties.getServerAckTimeout());
 
         try {
             client.connect();

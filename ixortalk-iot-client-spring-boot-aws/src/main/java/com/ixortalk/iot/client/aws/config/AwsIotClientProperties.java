@@ -23,6 +23,7 @@
  */
 package com.ixortalk.iot.client.aws.config;
 
+import com.amazonaws.services.iot.client.AWSIotConfig;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "ixortalk.iot.client.aws")
@@ -33,14 +34,14 @@ public class AwsIotClientProperties {
     private String clientId;
     private String certificateFile;
     private String privateKeyFile;
-    private Integer maxConnectionRetries;
-    private Integer baseRetryDelay;
-    private Integer connectionTimeout;
-    private Integer keepAliveInterval;
-    private Integer maxOfflineQueueSize;
-    private Integer maxRetryDelay;
-    private Integer numOfClientThreads;
-    private Integer serverAckTimeout;
+    private Integer maxConnectionRetries = AWSIotConfig.MAX_CONNECTION_RETRIES;
+    private Integer baseRetryDelay = AWSIotConfig.CONNECTION_BASE_RETRY_DELAY;
+    private Integer connectionTimeout = AWSIotConfig.CONNECTION_TIMEOUT;
+    private Integer keepAliveInterval = AWSIotConfig.KEEP_ALIVE_INTERVAL;
+    private Integer maxOfflineQueueSize = AWSIotConfig.MAX_OFFLINE_QUEUE_SIZE;
+    private Integer maxRetryDelay = AWSIotConfig.CONNECTION_MAX_RETRY_DELAY;
+    private Integer numOfClientThreads  = AWSIotConfig.NUM_OF_CLIENT_THREADS;
+    private Integer serverAckTimeout  = AWSIotConfig.SERVER_ACK_TIMEOUT;
 
     public String getEndpoint() {
         return endpoint;
