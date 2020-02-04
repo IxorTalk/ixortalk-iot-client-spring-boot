@@ -23,11 +23,6 @@
  */
 package com.ixortalk.iot.client.core.config;
 
-import java.lang.reflect.Method;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,9 +38,13 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.expression.StandardBeanExpressionResolver;
-import org.springframework.core.MethodIntrospector;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.AnnotationUtils;
+
+import java.lang.reflect.Method;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static java.lang.String.valueOf;
 import static java.util.Collections.newSetFromMap;
@@ -55,7 +54,7 @@ public class IotListenerAnnotationBeanPostProcessor implements BeanPostProcessor
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IotListenerAnnotationBeanPostProcessor.class);
 
-    private final Set<Class<?>> nonAnnotatedClasses = newSetFromMap(new ConcurrentHashMap<Class<?>, Boolean>(64));
+    private final Set<Class<?>> nonAnnotatedClasses = newSetFromMap(new ConcurrentHashMap<>(64));
 
     private BeanFactory beanFactory;
 
@@ -86,15 +85,13 @@ public class IotListenerAnnotationBeanPostProcessor implements BeanPostProcessor
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         if (!this.nonAnnotatedClasses.contains(bean.getClass())) {
             Class<?> targetClass = AopUtils.getTargetClass(bean);
-            Map<Method, IotListener> annotatedMethods = selectMethods(targetClass,
-                    (MethodIntrospector.MetadataLookup<IotListener>) method -> findListenerAnnotations(method));
+            Map<Method, IotListener> annotatedMethods = selectMethods(targetClass, this::findListenerAnnotations);
             if (annotatedMethods.isEmpty()) {
                 this.nonAnnotatedClasses.add(bean.getClass());
-                this.LOGGER.debug("No @" + IotListener.class.getSimpleName() + " annotations found on bean type: " + bean.getClass());
+                LOGGER.debug("No @" + IotListener.class.getSimpleName() + " annotations found on bean type: " + bean.getClass());
             } else {
-                annotatedMethods.entrySet().forEach(
-                        methodIotListenerEntry -> processIotListener(methodIotListenerEntry.getValue(), methodIotListenerEntry.getKey(), bean, beanName));
-                this.LOGGER.debug(annotatedMethods.size() + " @" + IotListener.class.getSimpleName() + " methods processed on bean '" + beanName + "': " + annotatedMethods);
+                annotatedMethods.forEach((key, value) -> processIotListener(value, key, bean, beanName));
+                LOGGER.debug(annotatedMethods.size() + " @" + IotListener.class.getSimpleName() + " methods processed on bean '" + beanName + "': " + annotatedMethods);
             }
         }
         return bean;

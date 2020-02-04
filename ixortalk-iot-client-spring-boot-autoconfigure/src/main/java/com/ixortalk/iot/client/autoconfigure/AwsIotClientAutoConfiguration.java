@@ -28,12 +28,15 @@ import com.amazonaws.services.iot.client.AWSIotMqttClient;
 import com.ixortalk.iot.client.aws.config.AwsIotClient;
 import com.ixortalk.iot.client.aws.config.AwsIotClientProperties;
 import com.ixortalk.iot.client.aws.config.AwsIotListenerFactory;
+import com.ixortalk.iot.client.aws.config.AwsIotMqttClient;
 import com.ixortalk.iot.client.aws.config.PrivateKeyReader;
+import com.ixortalk.iot.client.core.ConnectionEventHandler;
 import com.ixortalk.iot.client.core.IotClient;
 import com.ixortalk.iot.client.core.config.IotClientConfiguration;
 import com.ixortalk.iot.client.core.config.IotListenerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -69,6 +72,9 @@ public class AwsIotClientAutoConfiguration {
     @Inject
     private AwsIotClientProperties awsIotClientProperties;
 
+    @Autowired(required = false)
+    private List<ConnectionEventHandler> connectionEventHandlers;
+
     @Bean
     public IotClient iotClient() {
         return new AwsIotClient(awsIotMqttClient());
@@ -82,7 +88,7 @@ public class AwsIotClientAutoConfiguration {
     @Bean
     public AWSIotMqttClient awsIotMqttClient() {
         KeyStorePasswordPair pair = getKeyStorePasswordPair(awsIotClientProperties.getCertificateFile(), awsIotClientProperties.getPrivateKeyFile());
-        AWSIotMqttClient client = new AWSIotMqttClient(awsIotClientProperties.getEndpoint(), awsIotClientProperties.getClientId(), pair.keyStore, pair.keyPassword);
+        AWSIotMqttClient client = new AwsIotMqttClient(awsIotClientProperties.getEndpoint(), awsIotClientProperties.getClientId(), pair.keyStore, pair.keyPassword, connectionEventHandlers);
 
         client.setMaxConnectionRetries(awsIotClientProperties.getMaxConnectionRetries());
         client.setBaseRetryDelay(awsIotClientProperties.getBaseRetryDelay());

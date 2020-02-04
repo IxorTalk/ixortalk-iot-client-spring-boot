@@ -26,6 +26,7 @@ package com.ixortalk.iot.client.autoconfigure;
 import com.ixortalk.iot.client.azure.device.config.AzureIotDeviceClient;
 import com.ixortalk.iot.client.azure.device.config.AzureIotDeviceClientProperties;
 import com.ixortalk.iot.client.azure.device.config.AzureIotDeviceListenerFactory;
+import com.ixortalk.iot.client.core.ConnectionEventHandler;
 import com.ixortalk.iot.client.core.IotClient;
 import com.ixortalk.iot.client.core.config.IotClientConfiguration;
 import com.ixortalk.iot.client.core.config.IotListenerFactory;
@@ -33,6 +34,7 @@ import com.microsoft.azure.sdk.iot.device.DeviceClient;
 import com.microsoft.azure.sdk.iot.device.IotHubClientProtocol;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -40,6 +42,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 import javax.inject.Inject;
+import java.util.List;
+
+import static com.microsoft.azure.sdk.iot.device.IotHubConnectionState.CONNECTION_DROP;
+import static com.microsoft.azure.sdk.iot.device.IotHubConnectionState.CONNECTION_SUCCESS;
 
 @Configuration
 @EnableConfigurationProperties(AzureIotDeviceClientProperties.class)
@@ -51,6 +57,9 @@ public class AzureIotDeviceClientAutoConfiguration {
 
     @Inject
     private AzureIotDeviceClientProperties azureIotDeviceClientProperties;
+
+    @Autowired(required = false)
+    private List<ConnectionEventHandler> connectionEventHandlers;
 
     @Bean
     public IotClient iotClient() {
@@ -67,6 +76,15 @@ public class AzureIotDeviceClientAutoConfiguration {
 
         try {
             DeviceClient client = new DeviceClient(azureIotDeviceClientProperties.getDeviceConnectionString(), IotHubClientProtocol.MQTT);
+            client.registerConnectionStateCallback(
+                    (state, callbackContext) -> {
+                        if (state == CONNECTION_SUCCESS) {
+                            connectionEventHandlers.forEach(ConnectionEventHandler::onConnectionSuccess);
+                        } else if (state == CONNECTION_DROP) {
+                            connectionEventHandlers.forEach(ConnectionEventHandler::onConnectionFailure);
+                        }
+                    },
+                    null);
             client.open();
             return client;
         } catch (Exception e) {
