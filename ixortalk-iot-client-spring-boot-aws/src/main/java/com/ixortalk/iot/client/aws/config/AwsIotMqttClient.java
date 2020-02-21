@@ -23,8 +23,11 @@
  */
 package com.ixortalk.iot.client.aws.config;
 
+import com.amazonaws.services.iot.client.AWSIotException;
 import com.amazonaws.services.iot.client.AWSIotMqttClient;
 import com.ixortalk.iot.client.core.ConnectionEventHandler;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 
 import java.security.KeyStore;
 import java.util.List;
@@ -37,6 +40,15 @@ public class AwsIotMqttClient extends AWSIotMqttClient {
         super(clientEndpoint, clientId, keyStore, keyPassword);
 
         this.connectionEventHandlers = connectionEventHandlers;
+    }
+
+    @EventListener(ApplicationReadyEvent.class)
+    public void connectOnStartUp() {
+        try {
+            connect();
+        } catch (AWSIotException e) {
+            throw new IllegalStateException("AWS IoT Mqtt Client could not connect: " + e.getMessage(), e);
+        }
     }
 
     @Override

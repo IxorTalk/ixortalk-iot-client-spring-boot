@@ -23,7 +23,6 @@
  */
 package com.ixortalk.iot.client.autoconfigure;
 
-import com.amazonaws.services.iot.client.AWSIotException;
 import com.amazonaws.services.iot.client.AWSIotMqttClient;
 import com.ixortalk.iot.client.aws.config.AwsIotClient;
 import com.ixortalk.iot.client.aws.config.AwsIotClientProperties;
@@ -61,6 +60,8 @@ import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.util.List;
 
+import static com.google.common.collect.Lists.newArrayList;
+
 @Configuration
 @EnableConfigurationProperties(AwsIotClientProperties.class)
 @ConditionalOnClass(AWSIotMqttClient.class)
@@ -73,7 +74,7 @@ public class AwsIotClientAutoConfiguration {
     private AwsIotClientProperties awsIotClientProperties;
 
     @Autowired(required = false)
-    private List<ConnectionEventHandler> connectionEventHandlers;
+    private List<ConnectionEventHandler> connectionEventHandlers = newArrayList();
 
     @Bean
     public IotClient iotClient() {
@@ -98,12 +99,6 @@ public class AwsIotClientAutoConfiguration {
         client.setMaxRetryDelay(awsIotClientProperties.getMaxRetryDelay());
         client.setNumOfClientThreads(awsIotClientProperties.getNumOfClientThreads());
         client.setServerAckTimeout(awsIotClientProperties.getServerAckTimeout());
-
-        try {
-            client.connect();
-        } catch (AWSIotException e) {
-            throw new IllegalStateException("Could not start AWS IoT Mqtt Client: " + e.getMessage(), e);
-        }
 
         return client;
     }
