@@ -42,24 +42,34 @@ public class AzureIotDeviceClient implements IotClient {
     }
 
     @Override
+    public void publish(String payload) throws RuntimeException {
+        publish(payload, 0);
+    }
+
+    @Override
     public void publish(String topic, String payload) throws RuntimeException {
         throw new IllegalArgumentException("Error publishing to Azure IoT: No custom topics supported in the Azure Device SDK.");
     }
 
     @Override
-    public void publish(String payload) throws RuntimeException {
+    public void publish(String payload, long timeout) throws RuntimeException {
         try {
             Object lockobj = new Object();
             EventCallback callback = new EventCallback();
             deviceClient.sendEventAsync(new Message(payload), callback, lockobj);
 
             synchronized (lockobj) {
-                lockobj.wait();
+                lockobj.wait(timeout);
             }
 
         } catch (Exception e) {
             throw new RuntimeException("Error publishing to Azure IoT: " + e.getMessage(), e);
         }
+    }
+
+    @Override
+    public void publish(String topic, String payload, long timeout) throws RuntimeException {
+        throw new IllegalArgumentException("Error publishing to Azure IoT: No custom topics supported in the Azure Device SDK.");
     }
 
     private static class EventCallback implements IotHubEventCallback {
