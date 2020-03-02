@@ -25,7 +25,9 @@ package com.ixortalk.iot.client.core;
 
 public interface IotClient {
 
-    void publish(String topic, String payload) throws RuntimeException;
     void publish(String payload) throws RuntimeException;
+    void publish(String topic, String payload) throws RuntimeException;
+    void publish(String payload, long timeout) throws RuntimeException;
+    void publish(String topic, String payload, long timeout) throws RuntimeException;
 
 }

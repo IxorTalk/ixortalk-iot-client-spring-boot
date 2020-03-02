@@ -25,6 +25,7 @@ package com.ixortalk.iot.client.aws.config;
 
 import com.amazonaws.services.iot.client.AWSIotException;
 import com.amazonaws.services.iot.client.AWSIotMqttClient;
+import com.amazonaws.services.iot.client.AWSIotTimeoutException;
 import com.ixortalk.iot.client.core.IotClient;
 
 import javax.inject.Inject;
@@ -42,20 +43,29 @@ public class AwsIotClient implements IotClient {
     }
 
     @Override
-    public void publish(String topic, String payload) throws RuntimeException {
-        try {
-            awsIotMqttClient.publish(topic, payload);
-        } catch (AWSIotException e) {
-            throw new RuntimeException("Error publishing to AWS IoT: " + e.getMessage(), e);
-        }
+    public void publish(String payload) throws RuntimeException {
+        publish(payload, 0);
     }
 
     @Override
-    public void publish(String payload) throws RuntimeException {
+    public void publish(String topic, String payload) throws RuntimeException {
+        publish(topic, payload, 0);
+    }
+
+    @Override
+    public void publish(String payload, long timeout) throws RuntimeException {
         if (awsIotClientProperties.getDefaultTopic()==null) {
             throw new RuntimeException("Unable to publish to AWS IoT, no default topic provided.");
         }
-        publish(awsIotClientProperties.getDefaultTopic(),payload);
+        publish(awsIotClientProperties.getDefaultTopic(), payload, timeout);
+    }
 
+    @Override
+    public void publish(String topic, String payload, long timeout) throws RuntimeException {
+        try {
+            awsIotMqttClient.publish(topic, payload, timeout);
+        } catch (AWSIotException | AWSIotTimeoutException e) {
+            throw new RuntimeException("Error publishing to AWS IoT: " + e.getMessage(), e);
+        }
     }
 }
