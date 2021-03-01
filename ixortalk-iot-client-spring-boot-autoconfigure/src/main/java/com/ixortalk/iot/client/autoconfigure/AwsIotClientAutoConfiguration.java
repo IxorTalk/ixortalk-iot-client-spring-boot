@@ -23,12 +23,8 @@
  */
 package com.ixortalk.iot.client.autoconfigure;
 
-import com.amazonaws.services.iot.client.AWSIotMqttClient;
-import com.ixortalk.iot.client.aws.config.AwsIotClient;
-import com.ixortalk.iot.client.aws.config.AwsIotClientProperties;
-import com.ixortalk.iot.client.aws.config.AwsIotListenerFactory;
-import com.ixortalk.iot.client.aws.config.AwsIotMqttClient;
-import com.ixortalk.iot.client.aws.config.PrivateKeyReader;
+import com.amazonaws.services.iot.client.*;
+import com.ixortalk.iot.client.aws.config.*;
 import com.ixortalk.iot.client.core.ConnectionEventHandler;
 import com.ixortalk.iot.client.core.IotClient;
 import com.ixortalk.iot.client.core.config.IotClientConfiguration;
@@ -43,18 +39,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 import javax.inject.Inject;
-import java.io.BufferedInputStream;
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.math.BigInteger;
-import java.security.GeneralSecurityException;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
-import java.security.SecureRandom;
+import java.security.*;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
@@ -75,6 +62,9 @@ public class AwsIotClientAutoConfiguration {
 
     @Autowired(required = false)
     private List<ConnectionEventHandler> connectionEventHandlers = newArrayList();
+
+    @Autowired(required = false)
+    private List<AWSIotDevice> awsIotDevices = newArrayList();
 
     @Bean
     public IotClient iotClient() {
@@ -100,7 +90,17 @@ public class AwsIotClientAutoConfiguration {
         client.setNumOfClientThreads(awsIotClientProperties.getNumOfClientThreads());
         client.setServerAckTimeout(awsIotClientProperties.getServerAckTimeout());
 
+        awsIotDevices.forEach(awsIotDevice -> attachDevice(client, awsIotDevice));
+
         return client;
+    }
+
+    private void attachDevice(AWSIotMqttClient client, AWSIotDevice awsIotDevice) {
+        try {
+            client.attach(awsIotDevice);
+        } catch (AWSIotException e) {
+            throw new IllegalStateException("Could not attach iot device: " + e.getMessage(), e);
+        }
     }
 
     private static class KeyStorePasswordPair {
