@@ -89,6 +89,12 @@ public class AwsIotClientAutoConfiguration {
         client.setMaxRetryDelay(awsIotClientProperties.getMaxRetryDelay());
         client.setNumOfClientThreads(awsIotClientProperties.getNumOfClientThreads());
         client.setServerAckTimeout(awsIotClientProperties.getServerAckTimeout());
+        if (awsIotClientProperties.getLastWill() != null) {
+            client.setWillMessage(new AWSIotMessage(
+                    awsIotClientProperties.getLastWill().getTopic(),
+                    awsIotClientProperties.getLastWill().getQos(),
+                    awsIotClientProperties.getLastWill().getPayload()));
+        }
 
         awsIotDevices.forEach(awsIotDevice -> attachDevice(client, awsIotDevice));
 
