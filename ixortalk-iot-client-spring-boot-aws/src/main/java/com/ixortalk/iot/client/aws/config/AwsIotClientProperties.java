@@ -1,18 +1,18 @@
 /**
  * The MIT License (MIT)
- *
+ * <p>
  * Copyright (c) 2016-present IxorTalk CVBA
- *
+ * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -24,6 +24,7 @@
 package com.ixortalk.iot.client.aws.config;
 
 import com.amazonaws.services.iot.client.AWSIotConfig;
+import com.amazonaws.services.iot.client.AWSIotQos;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "ixortalk.iot.client.aws")
@@ -40,8 +41,9 @@ public class AwsIotClientProperties {
     private Integer keepAliveInterval = AWSIotConfig.KEEP_ALIVE_INTERVAL;
     private Integer maxOfflineQueueSize = AWSIotConfig.MAX_OFFLINE_QUEUE_SIZE;
     private Integer maxRetryDelay = AWSIotConfig.CONNECTION_MAX_RETRY_DELAY;
-    private Integer numOfClientThreads  = AWSIotConfig.NUM_OF_CLIENT_THREADS;
-    private Integer serverAckTimeout  = AWSIotConfig.SERVER_ACK_TIMEOUT;
+    private Integer numOfClientThreads = AWSIotConfig.NUM_OF_CLIENT_THREADS;
+    private Integer serverAckTimeout = AWSIotConfig.SERVER_ACK_TIMEOUT;
+    private LastWill lastWill;
 
     public String getEndpoint() {
         return endpoint;
@@ -145,5 +147,43 @@ public class AwsIotClientProperties {
 
     public void setServerAckTimeout(Integer serverAckTimeout) {
         this.serverAckTimeout = serverAckTimeout;
+    }
+
+    public LastWill getLastWill() {
+        return lastWill;
+    }
+
+    public void setLastWill(LastWill lastWill) {
+        this.lastWill = lastWill;
+    }
+
+    public static class LastWill {
+        private String topic;
+        private AWSIotQos qos;
+        private String payload;
+
+        public String getTopic() {
+            return topic;
+        }
+
+        public void setTopic(String topic) {
+            this.topic = topic;
+        }
+
+        public AWSIotQos getQos() {
+            return qos;
+        }
+
+        public void setQos(AWSIotQos qos) {
+            this.qos = qos;
+        }
+
+        public String getPayload() {
+            return payload;
+        }
+
+        public void setPayload(String payload) {
+            this.payload = payload;
+        }
     }
 }
